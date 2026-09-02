@@ -2,7 +2,7 @@
 
 $servidor = "127.0.0.1";
 $usuario = "root";
-$senha = "root123";
+$senha = "";
 $banco = "archive";
 $porta = 3306;
 
