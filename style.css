@@ -47,6 +47,18 @@ header {
     padding: 30px 6%;
 
     z-index: 100;
+
+    transition: 0.3s;
+}
+
+
+header.scrolled {
+    background: rgba(17, 17, 17, 0.92);
+
+    backdrop-filter: blur(10px);
+
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 
@@ -73,6 +85,12 @@ nav {
 
 .logo:hover {
     opacity: 0.6;
+}
+
+
+header.scrolled .logo,
+header.scrolled .nav-links a {
+    color: var(--branco);
 }
 
 
@@ -334,6 +352,8 @@ nav {
     border-bottom: 1px solid #383838;
 
     transition: 0.4s;
+
+    cursor: pointer;
 }
 
 
@@ -441,19 +461,21 @@ nav {
 
 
 .essential-film {
-    min-height: 500px;
+    min-height: 600px;
 
     display: grid;
 
-    grid-template-columns: 180px 1fr;
+    grid-template-columns: 200px 1fr;
 
-    gap: 35px;
+    gap: 45px;
 
-    padding: 40px;
+    padding: 45px;
 
     background: var(--laranja);
 
     transition: 0.4s;
+
+    cursor: pointer;
 }
 
 
@@ -464,9 +486,14 @@ nav {
 }
 
 
+.essential-film:hover .essential-description {
+    color: var(--branco);
+}
+
+
 .essential-image {
-    width: 180px;
-    height: 300px;
+    width: 200px;
+    height: 320px;
 
     overflow: hidden;
 }
@@ -491,13 +518,17 @@ nav {
 
 .essential-info {
     display: flex;
+
     flex-direction: column;
+
     align-items: flex-start;
 }
+
 
 .essential-info > span {
     font-size: 12px;
 }
+
 
 .essential-info h3 {
     margin-top: 60px;
@@ -511,12 +542,15 @@ nav {
     letter-spacing: -3px;
 }
 
+
 .essential-director {
     margin-top: 20px;
 
     font-size: 13px;
+
     font-weight: 500;
 }
+
 
 .essential-description {
     max-width: 300px;
@@ -530,6 +564,7 @@ nav {
     line-height: 1.6;
 }
 
+
 .essential-meta {
     display: flex;
 
@@ -542,6 +577,7 @@ nav {
 
     width: 100%;
 }
+
 
 .essential-meta span {
     font-size: 10px;
@@ -669,6 +705,206 @@ footer {
     color: #555550;
 
     font-size: 12px;
+}
+
+
+/* MODAL */
+
+.modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    opacity: 0;
+
+    transition: opacity 0.3s;
+}
+
+
+.modal.ativo {
+    opacity: 1;
+}
+
+
+.modal-conteudo {
+    position: relative;
+
+    width: min(900px, 100%);
+
+    display: grid;
+
+    grid-template-columns: 320px 1fr;
+
+    gap: 60px;
+
+    padding: 50px;
+
+    background: var(--branco);
+
+    color: var(--preto);
+
+    transform: translateY(20px);
+
+    transition: transform 0.3s;
+}
+
+
+.modal.ativo .modal-conteudo {
+    transform: translateY(0);
+}
+
+
+.modal-imagem {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+
+.modal-imagem img {
+    width: 100%;
+
+    max-height: 500px;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+
+.modal-info {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+
+.modal-label {
+    color: var(--laranja);
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
+}
+
+
+.modal-info h2 {
+    margin-top: 25px;
+
+    font-family: 'League Spartan', sans-serif;
+
+    font-size: clamp(50px, 6vw, 90px);
+
+    line-height: 0.85;
+
+    letter-spacing: -4px;
+}
+
+
+.modal-diretor {
+    margin-top: 30px;
+
+    font-size: 14px;
+}
+
+
+.modal-ano {
+    margin-top: 10px;
+
+    color: var(--cinza-texto);
+
+    font-size: 12px;
+}
+
+
+.modal-fechar {
+    position: absolute;
+
+    top: 20px;
+    right: 25px;
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--preto);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 35px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+
+.modal-fechar:hover {
+    color: var(--laranja);
+}
+
+
+.diretor-filmes {
+    margin-top: 30px;
+}
+
+.diretor-filme {
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(232, 227, 217, 0.2);
+}
+
+.diretor-filme h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.diretor-filme p {
+    margin: 5px 0 0;
+    color: var(--cinza);
+    font-size: 13px;
+}
+
+/* ANIMAÇÕES */
+
+.hero,
+.featured,
+.acclaimed,
+.essentials,
+.directors,
+.about {
+    opacity: 0;
+    transform: translateY(30px);
+
+    transition:
+        opacity 0.8s ease,
+        transform 0.8s ease;
+}
+
+
+.hero.visible,
+.featured.visible,
+.acclaimed.visible,
+.essentials.visible,
+.directors.visible,
+.about.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 
@@ -823,6 +1059,30 @@ footer {
 
     footer {
         padding: 30px 7%;
+    }
+
+
+    .modal {
+        padding: 20px;
+    }
+
+
+    .modal-conteudo {
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+
+        padding: 35px;
+    }
+
+
+    .modal-imagem img {
+        max-height: 350px;
+    }
+
+
+    .modal-info h2 {
+        font-size: 50px;
     }
 
 }
