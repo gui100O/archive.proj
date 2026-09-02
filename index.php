@@ -8,15 +8,29 @@ $resultado_diretores = $conexao->query("
     ORDER BY nome
 ");
 
+
+
 $resultado_filmes_diretores = $conexao->query("
     SELECT
         filmes.titulo,
         filmes.ano,
+        filmes.duracao,
+        filmes.descricao,
         filmes.imagem,
-        filmes.diretores_id
+        filmes.diretores_id,
+        filmes.ordem_diretor,
+        generos.nome AS genero
     FROM filmes
-    ORDER BY filmes.diretores_id, filmes.ano
+    JOIN generos
+        ON filmes.generos_id = generos.generos_id
+    ORDER BY
+        filmes.diretores_id,
+        filmes.ordem_diretor IS NULL,
+        filmes.ordem_diretor,
+        filmes.ano
 ");
+
+
 
 $filmes_por_diretor = [];
 
@@ -26,6 +40,8 @@ while ($filme = $resultado_filmes_diretores->fetch_assoc()) {
 
     $filmes_por_diretor[$id_diretor][] = $filme;
 }
+
+
 
 $resultado_destaque = $conexao->query("
     SELECT
@@ -40,7 +56,11 @@ $resultado_destaque = $conexao->query("
     WHERE filmes.titulo = 'The Godfather'
 ");
 
+
+
 $filme_destaque = $resultado_destaque->fetch_assoc();
+
+
 
 $resultado_aclamados = $conexao->query("
     SELECT
@@ -54,7 +74,10 @@ $resultado_aclamados = $conexao->query("
         ON filmes.generos_id = generos.generos_id
     WHERE filmes.categoria = 'acclaimed'
     ORDER BY filmes.filmes_id
+    LIMIT 5
 ");
+
+
 
 $resultado_essenciais = $conexao->query("
     SELECT
@@ -70,6 +93,8 @@ $resultado_essenciais = $conexao->query("
     ORDER BY filmes.filmes_id
 ");
 
+
+
 ?>
 
 <script>
@@ -77,6 +102,7 @@ $resultado_essenciais = $conexao->query("
 </script>
 
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
@@ -128,7 +154,11 @@ $resultado_essenciais = $conexao->query("
 
     </header>
 
+
+
     <main>
+
+
 
         <!-- HERO -->
 
@@ -139,27 +169,39 @@ $resultado_essenciais = $conexao->query("
             </p>
 
             <h1>
+
                 A collection<br>
+
                 of <span>stories.</span>
+
             </h1>
 
             <p class="hero-description">
+
                 Filmes, diretores e histórias
+
                 reunidos em um único arquivo.
+
             </p>
 
             <a href="#colecao" class="button">
+
                 Explorar coleção →
+
             </a>
 
         </section>
+
+
 
         <!-- FEATURED -->
 
         <section id="colecao" class="featured">
 
             <p class="section-number">
+
                 01 — DESTAQUE
+
             </p>
 
             <div class="featured-content">
@@ -167,15 +209,21 @@ $resultado_essenciais = $conexao->query("
                 <div>
 
                     <p class="featured-year">
+
                         <?= htmlspecialchars($filme_destaque["ano"]) ?>
+
                     </p>
 
                     <h2>
+
                         <?= htmlspecialchars($filme_destaque["titulo"]) ?>.
+
                     </h2>
 
                     <p class="featured-director">
+
                         <?= htmlspecialchars($filme_destaque["diretor"]) ?>
+
                     </p>
 
                 </div>
@@ -183,8 +231,11 @@ $resultado_essenciais = $conexao->query("
                 <div class="featured-image">
 
                     <img
+
                         src="<?= htmlspecialchars($filme_destaque["imagem"]) ?>"
+
                         alt="<?= htmlspecialchars($filme_destaque["titulo"]) ?>"
+
                     >
 
                 </div>
@@ -193,25 +244,36 @@ $resultado_essenciais = $conexao->query("
 
         </section>
 
+
+
         <!-- CRITICALLY ACCLAIMED -->
 
         <section class="acclaimed">
 
             <p class="section-number">
+
                 02 — CRITICALLY ACCLAIMED
+
             </p>
 
             <div class="section-heading">
 
                 <h2>
+
                     Acclaimed<br>
+
                     by critics.
+
                 </h2>
 
                 <p>
+
                     Obras reconhecidas por sua direção,
+
                     roteiro, atuação e impacto na história
+
                     do cinema.
+
                 </p>
 
             </div>
@@ -229,14 +291,19 @@ $resultado_essenciais = $conexao->query("
                     <article class="movie">
 
                         <span class="movie-number">
+
                             <?= str_pad($numero, 2, "0", STR_PAD_LEFT) ?>
+
                         </span>
 
                         <div class="movie-image">
 
                             <img
+
                                 src="<?= htmlspecialchars($filme["imagem"]) ?>"
+
                                 alt="Pôster de <?= htmlspecialchars($filme["titulo"]) ?>"
+
                             >
 
                         </div>
@@ -244,17 +311,23 @@ $resultado_essenciais = $conexao->query("
                         <div class="movie-info">
 
                             <h3>
+
                                 <?= htmlspecialchars($filme["titulo"]) ?>
+
                             </h3>
 
                             <p>
+
                                 <?= htmlspecialchars($filme["diretor"]) ?>
+
                             </p>
 
                         </div>
 
                         <span class="movie-year">
+
                             <?= htmlspecialchars($filme["ano"]) ?>
+
                         </span>
 
                     </article>
@@ -271,25 +344,36 @@ $resultado_essenciais = $conexao->query("
 
         </section>
 
+
+
         <!-- ESSENTIALS -->
 
         <section class="essentials">
 
             <p class="section-number">
+
                 03 — ESSENTIALS
+
             </p>
 
             <div class="section-heading">
 
                 <h2>
+
                     Essential<br>
+
                     cinema.
+
                 </h2>
 
                 <p>
+
                     Filmes que atravessaram gerações
+
                     e ajudaram a definir diferentes
+
                     períodos e estilos do cinema.
+
                 </p>
 
             </div>
@@ -309,8 +393,11 @@ $resultado_essenciais = $conexao->query("
                         <div class="essential-image">
 
                             <img
+
                                 src="<?= htmlspecialchars($filme["imagem"]) ?>"
+
                                 alt="Pôster de <?= htmlspecialchars($filme["titulo"]) ?>"
+
                             >
 
                         </div>
@@ -318,33 +405,47 @@ $resultado_essenciais = $conexao->query("
                         <div class="essential-info">
 
                             <span>
+
                                 <?= str_pad($numero, 2, "0", STR_PAD_LEFT) ?>
+
                             </span>
 
                             <h3>
+
                                 <?= htmlspecialchars($filme["titulo"]) ?>
+
                             </h3>
 
                             <p class="essential-director">
+
                                 <?= htmlspecialchars($filme["diretor"]) ?>
+
                             </p>
 
                             <p class="essential-description">
+
                                 <?= htmlspecialchars($filme["descricao"]) ?>
+
                             </p>
 
                             <div class="essential-meta">
 
                                 <span>
+
                                     <?= htmlspecialchars($filme["ano"]) ?>
+
                                 </span>
 
                                 <span>
+
                                     <?= htmlspecialchars($filme["duracao"]) ?> MIN
+
                                 </span>
 
                                 <span>
+
                                     <?= strtoupper(htmlspecialchars($filme["genero"])) ?>
+
                                 </span>
 
                             </div>
@@ -365,77 +466,127 @@ $resultado_essenciais = $conexao->query("
 
         </section>
 
+
+
         <!-- DIRECTORS -->
 
         <section id="diretores" class="directors">
 
             <p class="section-number">
+
                 04 — DIRECTORS
+
             </p>
 
             <h2>
-                Voices<br>
+
+                Minds<br>
+
                 behind the stories.
+
             </h2>
 
             <div class="director-list">
 
-                <div class="directors-grid">
+                <?php while ($diretor = $resultado_diretores->fetch_assoc()): ?>
 
-                    <?php while ($diretor = $resultado_diretores->fetch_assoc()): ?>
+                    <?php
 
-                        <div
-                            class="director"
-                            data-diretor-id="<?= $diretor["diretores_id"] ?>"
-                        >
+                    $id_diretor = $diretor["diretores_id"];
 
-                            <h3>
-                                <?= htmlspecialchars($diretor["nome"]) ?>
-                            </h3>
+                    $filmes_diretor = $filmes_por_diretor[$id_diretor] ?? [];
+
+                    ?>
+
+                    <div
+
+                        class="director"
+
+                        data-diretor-id="<?= $id_diretor ?>"
+
+                    >
+
+                        <h3>
+
+                            <?= htmlspecialchars($diretor["nome"]) ?>
+
+                        </h3>
+
+                        <div class="director-posters">
+
+                            <?php foreach (array_slice($filmes_diretor, 0, 4) as $filme_diretor): ?>
+
+                                <img
+
+                                    src="<?= htmlspecialchars($filme_diretor["imagem"]) ?>"
+
+                                    alt="Pôster de <?= htmlspecialchars($filme_diretor["titulo"]) ?>"
+
+                                >
+
+                            <?php endforeach; ?>
 
                         </div>
 
-                    <?php endwhile; ?>
+                    </div>
 
-                </div>
+                <?php endwhile; ?>
 
             </div>
 
         </section>
+
+
 
         <!-- ABOUT -->
 
         <section id="sobre" class="about">
 
             <p class="section-number">
+
                 05 — ABOUT
+
             </p>
 
             <h2>
+
                 An archive<br>
+
                 of stories.
+
             </h2>
 
             <p>
+
                 Um projeto desenvolvido para explorar
+
                 desenvolvimento web, banco de dados
+
                 e experiências digitais através de
+
                 uma coleção de filmes.
+
             </p>
 
         </section>
 
     </main>
 
+
+
     <!-- FOOTER -->
 
     <footer>
 
         <p>
-            ARCHIVE. - 2026
+
+            ARCHIVE. - 2026 - by Guilherme Farias
+
         </p>
 
     </footer>
+
+
 
     <script src="script.js"></script>
 
